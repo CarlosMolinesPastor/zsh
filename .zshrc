@@ -50,6 +50,8 @@ alias ga='git add'
 alias gc='git commit -m'
 alias gp='git push origin master'
 
+alias neo='neofetch | lolcat'
+
 #Dotfiles
 alias config='/usr/bin/git --git-dir=/home/carlos/.cfg/ --work-tree=/home/carlos'
 
