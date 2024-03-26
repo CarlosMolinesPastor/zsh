@@ -8,6 +8,7 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
 export ZSH="$HOME/.oh-my-zsh"
 export PATH=$PATH:$HOME/.dotnet/tools
+export PATH=/home/carlos/.local/share/gem/ruby/3.0.0/bin:$PATH
 export PATH=$PATH:$HOME.local/bin:/home/carlos/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/carlos/.dotnet/tools:/opt/Qt:/opt/Qt/Tools/QtCreator/bin:/opt/Qt/Tools/QtDesignStudio/bin:$HOME/.cargo/env:$HOME/.cargo/bin
 # Neovim
 #curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
