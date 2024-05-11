@@ -73,4 +73,5 @@ eval "$(ssh-agent -s)"
 # ssh-add ~/.ssh/id_ecdsa
 ## Errors pk10
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
+exec yes
 clear
