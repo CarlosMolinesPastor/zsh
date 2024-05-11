@@ -46,6 +46,11 @@ alias ll='colorls -lah'
 alias la='colorls -lA --sd'
 alias ls='colorls'
 alias lg='colorls -l --group-directories-first'
+## lsd vs colorls
+#alias l='ls -l'
+#alias la='ls -a'
+#alias lla='ls -la'
+#alias lt='ls --tree'
 # git
 alias gcl='git clone --depth 1'
 alias gi='git init'
