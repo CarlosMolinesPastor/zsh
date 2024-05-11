@@ -60,6 +60,9 @@ alias gp='git push origin master'
 # cat
 alias cat='bat'
 alias b='bat'
+## Ubuntu
+#alias cat='batcat'
+#alias b='batcat'
 # vim
 alias vi='nvim'
 alias vim='nvim'
@@ -72,6 +75,5 @@ alias ff='fastfetch'
 eval "$(ssh-agent -s)"
 # ssh-add ~/.ssh/id_ecdsa
 ## Errors pk10
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
-exec yes
+#typeset -g POWERLEVEL9K_INSTANT_PROMPT=quiet
 clear
