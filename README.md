@@ -14,10 +14,17 @@ cd ~/.oh-my-zsh/custom/plugins/antigen/
 curl -L git.io/antigen > antigen.zsh
 cd ~
 ```
+
 - Install colorls
 ```bash
 gem install colorls --user-install
 ```
+- Or else you can install lsd in your distribution ej:
+```bash
+sudo apt install lsd
+```
+and then comment the lines of colorls and uncomment the lines of lsd
+
 - Finally:
 ```bash
 cd ~
