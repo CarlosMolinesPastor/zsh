@@ -2,8 +2,8 @@
 ZSH config, for alias and for export the correct folder
 Also init de p10 powerlevel theme and colorls from ruby colorls and chromium or brave executable.
 
-- Install ruby, bat, git (depends to your distro)
-- Plugins installation:
+- **Install ruby and ruby-dev, bat, (in ubuntu the command is batcat), git (depends to your distro)**
+- **Plugins installation**:
 ```bash
 sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
@@ -15,7 +15,7 @@ curl -L git.io/antigen > antigen.zsh
 cd ~
 ```
 
-- Install colorls
+- **Install colorls**
 ```bash
 gem install colorls --user-install
 ```
@@ -25,7 +25,7 @@ sudo apt install lsd
 ```
 and then comment the lines of colorls and uncomment the lines of lsd
 
-- Finally:
+- **Finally**:
 ```bash
 cd ~
 git clone git@github.com:CarlosMolinesPastor/zsh.git
