@@ -1,4 +1,16 @@
 # ZSH
+Zsh is a terminal prompt used for take more advatages on terminal.
+First you have to install in your distro gnu/linux, like
+```bash
+sudo apt install zsh
+sudo pacman -S zsh
+```
+Then make the shell primary with
+```bash
+sudo chsh -s /usr/bin/zsh
+```
+Exit of the session and init now.
+Then I give my config to you.
 ZSH config, for alias and for export the correct folder
 Also init de p10 powerlevel theme and colorls from ruby colorls and chromium or brave executable.
 
