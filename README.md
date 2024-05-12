@@ -41,4 +41,5 @@ and then comment the lines of colorls and uncomment the lines of lsd
 ```bash
 cd ~
 git clone git@github.com:CarlosMolinesPastor/zsh.git
+cp ~/zsh/.zshrc ~/.zshrc
 ``` 
