@@ -53,6 +53,6 @@ cp ~/zsh/.zshrc ~/.zshrc
 
 <div style='text-align: center';>
   
-![](https://github.com/CarlosMolinesPastor/zsh/blob/main/2024-05-13T01%3A51%3A04%2C617649219%2B02%3A00.png)
+![](https://github.com/CarlosMolinesPastor/zsh/blob/main/Screenshot_2024-09-19-18-09-23_1920x1080.png)
 
 </div>
