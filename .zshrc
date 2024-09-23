@@ -138,4 +138,5 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 eval "$(ssh-agent -s)"
 # ssh-add ~/.ssh/id_ecdsa
 clear
+prompt off
 eval "$(starship init zsh)"
