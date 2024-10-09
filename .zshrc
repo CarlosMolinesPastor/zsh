@@ -38,6 +38,7 @@ fi
 
 # If you come from bash you might have to change your $PATH.
 export PATH=$HOME/bin:/usr/local/bin:$PATH
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
 export PATH=$HOME/.local/bin:$PATH
 export ZSH="$HOME/.oh-my-zsh"
 export PATH=$HOME/.local/share/gem/ruby/3.2.0/bin:$PATH
@@ -138,5 +139,6 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 eval "$(ssh-agent -s)"
 # ssh-add ~/.ssh/id_ecdsa
 clear
-prompt off
+## Only if starship no open normally
+#prompt off
 eval "$(starship init zsh)"
