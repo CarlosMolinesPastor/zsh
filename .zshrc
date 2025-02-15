@@ -13,6 +13,7 @@
 # sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+# git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
 # mkdir ~/.oh-my-zsh/custom/plugins/antigen/
 # cd ~/.oh-my-zsh/custom/plugins/antigen/
 # curl -L git.io/antigen > antigen.zsh
@@ -41,7 +42,7 @@ export PATH=$HOME/bin:/usr/local/bin:$PATH
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
 export PATH=$HOME/.local/bin:$PATH
 export ZSH="$HOME/.oh-my-zsh"
-export PATH=$HOME/.local/share/gem/ruby/3.2.0/bin:$PATH
+export PATH=$HOME/.local/share/gem/ruby/3.3.0/bin:$PATH
 export PATH=$PATH:$HOME.local/bin:$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.dotnet/tools:/opt/Qt:/opt/Qt/Tools/QtCreator/bin:/opt/Qt/Tools/QtDesignStudio/bin:$HOME/.cargo/env:$HOME/.cargo/bin
 export PATH="$HOME/go/bin:$GOPATH/bin:$PATH"
 export NVM_DIR="$HOME/.nvm"
