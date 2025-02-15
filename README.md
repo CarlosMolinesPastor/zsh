@@ -29,6 +29,7 @@ Also init de p10 powerlevel theme and colorls from ruby colorls and chromium or 
 sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
 mkdir ~/.oh-my-zsh/custom/plugins/antigen/
 cd ~/.oh-my-zsh/custom/plugins/antigen/
 curl -L git.io/antigen > antigen.zsh
