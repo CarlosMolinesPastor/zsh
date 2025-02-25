@@ -33,36 +33,35 @@
 # Starsip
 # curl -sS https://starship.rs/install.sh | sh
 
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
- source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+#if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+# source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+#fi
 
-# If you come from bash you might have to change your $PATH.
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+# $PATH.
+export PATH="$HOME/bin:/usr/local/bin:$HOME/.local/bin:$HOME/.local/share/gem/ruby/3.3.0/bin:$HOME/.cargo/bin:$HOME/go/bin:$GOPATH/bin:$HOME/.dotnet/tools:/opt/Qt:/opt/Qt/Tools/QtCreator/bin:/opt/Qt/Tools/QtDesignStudio/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$PATH"
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
-export PATH=$HOME/.local/bin:$PATH
-export ZSH="$HOME/.oh-my-zsh"
-export PATH=$HOME/.local/share/gem/ruby/3.3.0/bin:$PATH
-export PATH=$PATH:$HOME.local/bin:$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.dotnet/tools:/opt/Qt:/opt/Qt/Tools/QtCreator/bin:/opt/Qt/Tools/QtDesignStudio/bin:$HOME/.cargo/env:$HOME/.cargo/bin
-export PATH="$HOME/go/bin:$GOPATH/bin:$PATH"
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-source $(dirname $(gem which colorls))/tab_complete.sh
+
 
 # CHROME for FLutter
-# export CHROME_EXECUTABLE="/opt/brave-bin/brave"
 export CHROME_EXECUTABLE="/usr/bin/chromium"
 
-#Plugins
-plugins=(git zsh-syntax-highlighting zsh-autosuggestions fzf-tab)
+# Oh my zsh
+export ZSH="$HOME/.oh-my-zsh"
+plugins=(git zsh-syntax-highlighting zsh-autosuggestions fzf-tab nvm)
 source $ZSH/oh-my-zsh.sh
 
+# NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
 #Antigen
-source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/antigen/antigen.zsh
+#source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/antigen/antigen.zsh
 
 ## fzf
-source <(fzf --zsh)
+#source <(fzf --zsh)
+
+#colorls
+source $(dirname $(gem which colorls))/tab_complete.sh
 
 ##Alias
 # omz
@@ -128,18 +127,22 @@ setopt appendhistory
 setopt sharehistory
 setopt hist_ignore_space
 setopt hist_ignore_all_dups
+setopt hist_ignore_space
 
 # Zstyle
 zstyle ':completion:*' menu no
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' list-colors ''
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lsd --color $realpath'
 
 
 ## Init ssh server
-eval "$(ssh-agent -s)"
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+    ssh-agent > ~/.ssh-agent.env
+fi
+if [[ ! "$SSH_AUTH_SOCK" ]]; then
+    eval "$(<~/.ssh-agent.env)"
+fi
 # ssh-add ~/.ssh/id_ecdsa
 clear
-## Only if starship no open normally
-#prompt off
 eval "$(starship init zsh)"
