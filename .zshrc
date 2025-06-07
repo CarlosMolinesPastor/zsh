@@ -1,12 +1,14 @@
-## Git
+#######################################################################
+## SOME OF THE POPULAR COMMANDS TO MAKE THIS SCRIPT
+## GIT
 # sudo apt install git
 # sudo pacman -S git
-## Neovim the last version
+## NEOVIM
 # curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
 # sudo rm -rf /opt/nvim
 # sudo tar -C /opt -xzf nvim-linux64.tar.gz
-# export PATH="$PATH:/opt/nvim-linux64/bin" Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-## Instalacion de zsh
+# export PATH="$PATH:/opt/nvim-linux64/bin"
+## ZSH
 # sudo apt install zsh
 # sudo pacman -S zsh
 # chsh -s $(which zsh)
@@ -14,135 +16,137 @@
 # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 # git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
-# mkdir ~/.oh-my-zsh/custom/plugins/antigen/
-# cd ~/.oh-my-zsh/custom/plugins/antigen/
-# curl -L git.io/antigen > antigen.zsh
 # cd ~
-## Colorls
-# gem install colorls --user-install
-## Bat
+## BAT
 # sudo apt install bat
 # sudo pacman -S bat
-## Fzf
+## FZF
 # sudo apt install fzf
 # sudo pacman -S fzf
-## Instalacion source
+## INSTALACION PROPIA
 # cd ~
 # git clone git@github.com:CarlosMolinesPastor/zsh.git
 # cp ~/zsh/.zshrc ~/.zshrc
-# Starsip
+## STARSHIP
 # curl -sS https://starship.rs/install.sh | sh
+#######################################################################
 
-#if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-# source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-#fi
+#######################################################################
+# 🐚 ZSH CONFIGURACIÓN OPTIMIZADA – Carlos Molines Pastor
+#######################################################################
 
-# $PATH.
-export PATH="$HOME/bin:/usr/local/bin:$HOME/.local/bin:$HOME/.local/share/gem/ruby/3.3.0/bin:$HOME/.cargo/bin:$HOME/go/bin:$GOPATH/bin:$HOME/.dotnet/tools:/opt/Qt:/opt/Qt/Tools/QtCreator/bin:/opt/Qt/Tools/QtDesignStudio/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$PATH"
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
-
-
-# CHROME for FLutter
-export CHROME_EXECUTABLE="/usr/bin/chromium"
-
-# Oh my zsh
+## ─── VARIABLES DE ENTORNO ───────────────────────────────────────────
 export ZSH="$HOME/.oh-my-zsh"
-plugins=(git zsh-syntax-highlighting zsh-autosuggestions fzf-tab nvm)
+export CHROME_EXECUTABLE="/usr/bin/chromium"
+export NVM_DIR="$HOME/.nvm"
+# Detectar automáticamente JAVA_HOME
+if type -p java &>/dev/null; then
+  JAVA_BIN=$(readlink -f "$(which java)")
+  JAVA_HOME=$(dirname "$(dirname "$JAVA_BIN")")
+  export JAVA_HOME
+else
+  echo "⚠️  Java no está instalado o no está en el PATH"
+fi
+
+# Añadir rutas al PATH
+export PATH="$HOME/bin:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/go/bin:$GOPATH/bin:$HOME/.dotnet/tools:/opt/Qt:/opt/Qt/Tools/QtCreator/bin:/opt/Qt/Tools/QtDesignStudio/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:$PATH"
+
+## ─── HISTORIAL ──────────────────────────────────────────────────────
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=5000
+SAVEHIST=5000
+setopt appendhistory sharehistory hist_ignore_space hist_ignore_all_dups
+
+## ─── PLUGINS DE OH-MY-ZSH ───────────────────────────────────────────
+plugins=(git)
+
+[[ -d ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting ]] && plugins+=("zsh-syntax-highlighting")
+[[ -d ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions ]] && plugins+=("zsh-autosuggestions")
+[[ -d ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fzf-tab ]] && plugins+=("fzf-tab")
+[[ -d "$NVM_DIR" ]] && plugins+=("nvm")
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 source $ZSH/oh-my-zsh.sh
 
-# NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+## ─── NVM ────────────────────────────────────────────────────────────
+[[ -s "$NVM_DIR/nvm.sh" ]] && \. "$NVM_DIR/nvm.sh"
 
-#Antigen
-#source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/antigen/antigen.zsh
+## ─── STARSHIP PROMPT ────────────────────────────────────────────────
+command -v starship &>/dev/null && eval "$(starship init zsh)"
 
-## fzf
-#source <(fzf --zsh)
+## ─── COLORLS COMPLETION ─────────────────────────────────────────────
+if command -v colorls &>/dev/null; then
+  source "$(dirname "$(gem which colorls)")/tab_complete.sh"
+fi
 
-#colorls
-source $(dirname $(gem which colorls))/tab_complete.sh
+## ─── FZF PREVIEW PARA CD ────────────────────────────────────────────
+command -v lsd &>/dev/null && zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lsd --color $realpath'
 
-##Alias
-# omz
+## ─── SSH AGENT ──────────────────────────────────────────────────────
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+  eval "$(ssh-agent -s)" > ~/.ssh-agent.env
+fi
+[[ -f ~/.ssh-agent.env ]] && source ~/.ssh-agent.env
+# ssh-add ~/.ssh/id_ecdsa  # Descomentar si usas clave privada fija
+
+## ─── ALIAS ÚTILES ───────────────────────────────────────────────────
+
+# Zsh config
 alias vz="nvim ~/.zshrc"
-# ls
-alias l='colorls -lh'
-alias ll='colorls -lah'
-alias la='colorls -lA --sd'
-alias ls='colorls'
-alias lg='colorls -l --group-directories-first'
+alias sz="source ~/.zshrc"
 
-## lsd vs colorls
-#alias l='ls -l'
-#alias la='ls -a'
-#alias lla='ls -la'
-#alias lt='ls --tree'
+# === Alias para lsd (recomendado) ===
+if command -v lsd &>/dev/null; then
+  alias ls='lsd'
+  alias l='lsd -lh'
+  alias ll='lsd -lah'
+  alias la='lsd -la'
+  alias lt='lsd --tree'
+  alias lg='lsd -l --group-dirs=first'
+else
+  echo "⚠️  lsd no está instalado, instala con: sudo pacman -S lsd"
+fi
 
-# git
+# Alias para fzf con bat (previsualización)
+if command -v fzf &>/dev/null && command -v bat &>/dev/null; then
+  alias fiu="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
+  alias vf='nvim $(fiu)'
+  alias bf='bat $(fzf)'
+fi
+
+# Git
 alias gcl='git clone --depth 1'
 alias gi='git init'
 alias ga='git add'
 alias gc='git commit -m'
-alias gp='git push origin master'
+alias gp='git push'
+alias gs='git status'
+alias gd='git diff'
 
-# cat
-alias cat='bat'
-alias b='bat'
-export BAT_THEME="Catppuccin Mocha"
+# BAT
+if command -v batcat &>/dev/null; then
+  alias cat='batcat'
+  alias b='batcat'
+else
+  alias cat='bat'
+  alias b='bat'
+fi
 
-## Ubuntu
-#alias cat='batcat'
-#alias b='batcat'
-
-# vim
+# Neovim
 alias v='nvim'
 alias vi='nvim'
 alias vim='nvim'
 
-# clear
+# Varios
+alias r='ranger'
 alias c='clear'
-
-# fzf
-# Buscar archivo y muestra una previsualización con bat en la derecha
-alias fiu="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
-alias vf='nvim $(fiu)'
-alias bf='bat $(fzf)'
-
 alias ff='fastfetch'
 
-alias r='ranger'
-
-bindkey -e
-bindkey '^f' fzf-file-widget 
+## ─── TECLAS RÁPIDAS (bindkeys) ──────────────────────────────────────
+bindkey -e                          # Estilo emacs
+bindkey '^f' fzf-file-widget       # Ctrl+F para buscar archivo
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 
-# History
-HISTFILE=~/.zsh_history
-HISTSIZE=5000
-SAVEHIST=$HISTSIZE
-HISTDUP=erase
-setopt appendhistory
-setopt sharehistory
-setopt hist_ignore_space
-setopt hist_ignore_all_dups
-setopt hist_ignore_space
-
-# Zstyle
-zstyle ':completion:*' menu no
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-zstyle ':completion:*' list-colors ''
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lsd --color $realpath'
-
-
-## Init ssh server
-if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-    ssh-agent > ~/.ssh-agent.env
-fi
-if [[ ! "$SSH_AUTH_SOCK" ]]; then
-    eval "$(<~/.ssh-agent.env)"
-fi
-# ssh-add ~/.ssh/id_ecdsa
+## ─── CLEAR Y BIENVENIDA FINAL ───────────────────────────────────────
 clear
-eval "$(starship init zsh)"
