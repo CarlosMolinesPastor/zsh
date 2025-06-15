@@ -21,7 +21,6 @@ curl -sS https://starship.rs/install.sh | sh
 Exit of the session and init now.
 Then I give my config to you.
 ZSH config, for alias and for export the correct folder
-Also init de p10 powerlevel theme and colorls from ruby colorls and chromium or brave executable.
 
 - **Plugins installation**:
 
@@ -34,8 +33,6 @@ git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install --key-bindings --completion --no-update-rc
 cd ~
 ```
-
-and then comment the lines of colorls and uncomment the lines of lsd
 
 - **Finally**:
 
