@@ -12,141 +12,199 @@
 # sudo apt install zsh
 # sudo pacman -S zsh
 # chsh -s $(which zsh)
-# sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
-# git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
-# git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-# git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
-# cd ~
-## BAT
-# sudo apt install bat
-# sudo pacman -S bat
-## FZF
-# sudo apt install fzf
-# sudo pacman -S fzf
-## INSTALACION PROPIA
-# cd ~
-# git clone git@github.com:CarlosMolinesPastor/zsh.git
-# cp ~/zsh/.zshrc ~/.zshrc
-## STARSHIP
-# curl -sS https://starship.rs/install.sh | sh
+
 #######################################################################
 
 #######################################################################
-# 🐚 ZSH CONFIGURACIÓN OPTIMIZADA – Carlos Molines Pastor
+# 🐚 ZSH CONFIGURACIÓN – Carlos Molines Pastor
 #######################################################################
 
-## ─── VARIABLES DE ENTORNO ───────────────────────────────────────────
-export ZSH="$HOME/.oh-my-zsh"
-export CHROME_EXECUTABLE="/usr/bin/chromium"
-export NVM_DIR="$HOME/.nvm"
-# Detectar automáticamente JAVA_HOME
-if type -p java &>/dev/null; then
-  JAVA_BIN=$(readlink -f "$(which java)")
-  JAVA_HOME=$(dirname "$(dirname "$JAVA_BIN")")
-  export JAVA_HOME
+#!/usr/bin/env zsh
+
+#######################################################################
+# 🚀 ZSH CONFIGURACIÓN OPTIMIZADA – Carlos Molines Pastor (Mejorada)
+#######################################################################
+
+# ────[ Verificación de modo de ejecución ]───────────────────────────
+if [[ -o interactive ]]; then
+    # Código solo para sesiones interactivas
 else
-  echo "⚠️  Java no está instalado o no está en el PATH"
+    return  # No hacer nada en sesiones no interactivas
 fi
 
-# Añadir rutas al PATH
-export PATH="$HOME/bin:$HOME/.local/bin:$HOME/.cargo/bin:$HOME/go/bin:$GOPATH/bin:$HOME/.dotnet/tools:/opt/Qt:/opt/Qt/Tools/QtCreator/bin:/opt/Qt/Tools/QtDesignStudio/bin:/usr/local/sbin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin:$PATH"
+# ────[ Carga de dependencias ]───────────────────────────────────────
+autoload -Uz colors && colors
+autoload -Uz compinit && compinit -u
+zmodload zsh/zprof  # Para profiling (opcional)
 
-## ─── HISTORIAL ──────────────────────────────────────────────────────
-HISTFILE="$HOME/.zsh_history"
-HISTSIZE=5000
-SAVEHIST=5000
-setopt appendhistory sharehistory hist_ignore_space hist_ignore_all_dups
+# ────[ Variables de Entorno ]────────────────────────────────────────
+export ZSH="${HOME}/.oh-my-zsh"
+export ZSH_CACHE_DIR="${HOME}/.cache/zsh"
+export HISTFILE="${HOME}/.zsh_history"
+export LESSHISTFILE="-"
+export MCFLY_HISTORY="${HOME}/.mcfly_history"
+export NVM_DIR="${HOME}/.nvm"
+export STARSHIP_CONFIG="${HOME}/.config/starship.toml"
 
-## ─── PLUGINS DE OH-MY-ZSH ───────────────────────────────────────────
-plugins=(git)
+# Configuración de editor preferido
+(( ${+commands[nvim]} )) && {
+    export EDITOR="nvim"
+    export VISUAL="nvim"
+} || {
+    export EDITOR="vim"
+    export VISUAL="vim"
+}
 
-[[ -d ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting ]] && plugins+=("zsh-syntax-highlighting")
-[[ -d ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions ]] && plugins+=("zsh-autosuggestions")
-[[ -d ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fzf-tab ]] && plugins+=("fzf-tab")
-[[ -d "$NVM_DIR" ]] && plugins+=("nvm")
+# Detección automática de Java
+if (( ${+commands[java]} )); then
+    export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which java))))
+elif (( ${+commands[archlinux-java]} )); then
+    export JAVA_HOME=$(archlinux-java get)
+fi
+
+# PATH personalizado
+typeset -U PATH path  # Elimina duplicados
+path=(
+    "${HOME}/.local/bin"
+    "${HOME}/.cargo/bin"
+    "${HOME}/go/bin"
+    "${HOME}/.dotnet/tools"
+    "/opt/Qt/Tools/QtCreator/bin"
+    "/opt/Qt/Tools/QtDesignStudio/bin"
+    "/usr/local/sbin"
+    "/usr/local/bin"
+    "/usr/sbin"
+    "/usr/bin"
+    "/sbin"
+    "/bin"
+    ${path}
+)
+export PATH
+
+# ────[ Configuración de Historial ]──────────────────────────────────
+HISTSIZE=10000
+SAVEHIST=10000
+setopt extended_history       # Registro de timestamp
+setopt hist_expire_dups_first
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt hist_verify
+setopt inc_append_history
+setopt share_history
+
+# ────[ Configuración de Oh-My-ZSH ]──────────────────────────────────
+DISABLE_AUTO_UPDATE="true"   # Desactiva actualizaciones automáticas
+ZSH_THEME=""                # Desactiva tema para usar Starship
+
+# Plugins base
+plugins=(
+    git
+    sudo
+    systemd
+)
+
+# Plugins condicionales
+[[ -d ${ZSH_CUSTOM}/plugins/zsh-syntax-highlighting ]] && plugins+=(zsh-syntax-highlighting)
+[[ -d ${ZSH_CUSTOM}/plugins/zsh-autosuggestions ]] && plugins+=(zsh-autosuggestions)
+[[ -d ${ZSH_CUSTOM}/plugins/fzf-tab ]] && plugins+=(fzf-tab)
+[[ -f ${HOME}/.fzf.zsh ]] && source ${HOME}/.fzf.zsh
+
+# Carga de Oh-My-ZSH
+source ${ZSH}/oh-my-zsh.sh
+
+# Carga de plugin fzf-tab
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-source $ZSH/oh-my-zsh.sh
+# ────[ Carga de herramientas externas ]───────────────────────────────
+# NVM (Node Version Manager)
+[[ -s "${NVM_DIR}/nvm.sh" ]] && source "${NVM_DIR}/nvm.sh" --no-use
 
-## ─── NVM ────────────────────────────────────────────────────────────
-[[ -s "$NVM_DIR/nvm.sh" ]] && \. "$NVM_DIR/nvm.sh"
+# Starship Prompt
+(( ${+commands[starship]} )) && eval "$(starship init zsh)"
 
-## ─── STARSHIP PROMPT ────────────────────────────────────────────────
-command -v starship &>/dev/null && eval "$(starship init zsh)"
+# FZF
+(( ${+commands[fzf]} )) && {
+    export FZF_DEFAULT_OPTS="--height 40% --layout=reverse --border --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
+    export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+}
 
-## ─── COLORLS COMPLETION ─────────────────────────────────────────────
-if command -v colorls &>/dev/null; then
-  source "$(dirname "$(gem which colorls)")/tab_complete.sh"
+# ────[ Configuración de Completado ]─────────────────────────────────
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lsd --color=always $realpath'
+
+# ────[ Alias y Funciones ]───────────────────────────────────────────
+# Comprobación de comandos antes de crear alias
+() {
+    # Sistema de archivos
+    (( ${+commands[lsd]} )) && {
+        alias ls='lsd --group-dirs first'
+        alias ll='lsd -lh'
+        alias la='lsd -lah'
+        alias lt='lsd --tree --depth 2'
+    } || {
+        alias ls='ls --color=auto --group-directories-first'
+        alias ll='ls -lh'
+        alias la='ls -lah'
+    }
+
+    # Editores
+    (( ${+commands[nvim]} )) && {
+        alias v='nvim'
+        alias vi='nvim'
+        alias vim='nvim'
+    }
+
+    # Git
+    (( ${+commands[git]} )) && {
+        alias gcl='git clone --depth 1'
+        alias gs='git status'
+        alias ga='git add'
+        alias gc='git commit -m'
+        alias gp='git push'
+        alias gd='git diff'
+    }
+
+    # FZF
+      alias fiu="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
+      alias vf='nvim $(fiu)'
+      alias bf='bat $(fzf)'
+
+    # Herramientas modernas
+    (( ${+commands[bat]} )) && alias cat='bat'
+    (( ${+commands[ranger]} )) && alias r='ranger'
+    (( ${+commands[fastfetch]} )) && alias ff='fastfetch'
+
+    # Alias de sistema
+    alias vz="${EDITOR} ${HOME}/.zshrc"
+    alias sz="source ${HOME}/.zshrc"
+    alias c='clear'
+}
+
+# Funciones personalizadas
+function mkcd() { mkdir -p "$1" && cd "$1"; }
+function gacp() { git add . && git commit -m "$1" && git push; }
+
+# ────[ Configuración de SSH ]────────────────────────────────────────
+if (( ${+commands[ssh-agent]} )); then
+    if ! pgrep -u "${USER}" ssh-agent > /dev/null; then
+        eval "$(ssh-agent -s)" > "${HOME}/.ssh-agent.env"
+    fi
+    [[ -f "${HOME}/.ssh-agent.env" ]] && source "${HOME}/.ssh-agent.env"
 fi
 
-## ─── FZF PREVIEW PARA CD ────────────────────────────────────────────
-command -v lsd &>/dev/null && zstyle ':fzf-tab:complete:cd:*' fzf-preview 'lsd --color $realpath'
-
-## ─── SSH AGENT ──────────────────────────────────────────────────────
-if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-  eval "$(ssh-agent -s)" > ~/.ssh-agent.env
-fi
-[[ -f ~/.ssh-agent.env ]] && source ~/.ssh-agent.env
-# ssh-add ~/.ssh/id_ecdsa  # Descomentar si usas clave privada fija
-
-## ─── ALIAS ÚTILES ───────────────────────────────────────────────────
-
-# Zsh config
-alias vz="nvim ~/.zshrc"
-alias sz="source ~/.zshrc"
-
-# === Alias para lsd (recomendado) ===
-if command -v lsd &>/dev/null; then
-  alias ls='lsd'
-  alias l='lsd -lh'
-  alias ll='lsd -lah'
-  alias la='lsd -la'
-  alias lt='lsd --tree'
-  alias lg='lsd -l --group-dirs=first'
-else
-  echo "⚠️  lsd no está instalado, instala con: sudo pacman -S lsd"
-fi
-
-# Alias para fzf con bat (previsualización)
-if command -v fzf &>/dev/null && command -v bat &>/dev/null; then
-  alias fiu="fzf --preview 'bat --color=always --style=numbers --line-range=:500 {}'"
-  alias vf='nvim $(fiu)'
-  alias bf='bat $(fzf)'
-fi
-
-# Git
-alias gcl='git clone --depth 1'
-alias gi='git init'
-alias ga='git add'
-alias gc='git commit -m'
-alias gp='git push'
-alias gs='git status'
-alias gd='git diff'
-
-# BAT
-if command -v batcat &>/dev/null; then
-  alias cat='batcat'
-  alias b='batcat'
-else
-  alias cat='bat'
-  alias b='bat'
-fi
-
-# Neovim
-alias v='nvim'
-alias vi='nvim'
-alias vim='nvim'
-
-# Varios
-alias r='ranger'
-alias c='clear'
-alias ff='fastfetch'
-
-## ─── TECLAS RÁPIDAS (bindkeys) ──────────────────────────────────────
-bindkey -e                          # Estilo emacs
+# ────[ Configuración de teclas ]─────────────────────────────────────
+bindkey -e  # Modo Emacs
 bindkey '^f' fzf-file-widget       # Ctrl+F para buscar archivo
-bindkey '^p' history-search-backward
-bindkey '^n' history-search-forward
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey '^R' history-incremental-search-backward
 
-## ─── CLEAR Y BIENVENIDA FINAL ───────────────────────────────────────
-clear
+# ────[ Mensaje de bienvenida ]───────────────────────────────────────
+if (( ${+commands[fastfetch]} )); then
+    fastfetch
+else
+    echo -e "${fg[green]}ZSH configurado correctamente!${reset_color}"
+fi
