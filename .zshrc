@@ -1,9 +1,8 @@
-#######################################################################
 ## SOME OF THE POPULAR COMMANDS TO MAKE THIS SCRIPT
 ## GIT
 # sudo apt install git
 # sudo pacman -S git
-## NEOVIM
+## NEOVIM manual instalation
 # curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
 # sudo rm -rf /opt/nvim
 # sudo tar -C /opt -xzf nvim-linux64.tar.gz
@@ -14,16 +13,10 @@
 # chsh -s $(which zsh)
 
 #######################################################################
-
-#######################################################################
 # 🐚 ZSH CONFIGURACIÓN – Carlos Molines Pastor
 #######################################################################
 
 #!/usr/bin/env zsh
-
-#######################################################################
-# 🚀 ZSH CONFIGURACIÓN OPTIMIZADA – Carlos Molines Pastor (Mejorada)
-#######################################################################
 
 # ────[ Verificación de modo de ejecución ]───────────────────────────
 if [[ -o interactive ]]; then
