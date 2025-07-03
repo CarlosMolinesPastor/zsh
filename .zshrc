@@ -50,12 +50,13 @@ path=(
     "${HOME}/.local/bin"
     "${HOME}/.cargo/bin"
     "${HOME}/go/bin"
+    "${HOME}/.npm-global/bin"
     "/usr/local/bin"
     "/usr/bin"
     $path
 )
 export PATH
-
+export GEMINI_API_KEY=""
 # ────[ Oh-My-Zsh y Plugins Principales ]─────────────────────────────
 plugins=(git sudo systemd)
 source "${ZSH}/oh-my-zsh.sh"
