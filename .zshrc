@@ -45,12 +45,14 @@ export HISTSIZE=10000
 export SAVEHIST=10000
 
 # ────[ PATH ]────────────────────────────────────────────────────────
+export NVM_DIR="$HOME/.config/nvm"
 typeset -U PATH path
 path=(
     "${HOME}/.local/bin"
     "${HOME}/.cargo/bin"
     "${HOME}/go/bin"
     "${HOME}/.npm-global/bin"
+    "${HOME}/.opencode/bin"
     "/usr/local/bin"
     "/usr/bin"
     $path
@@ -111,10 +113,7 @@ mkcd() { mkdir -p "$1" && cd "$1"; }
 gacp() { git add . && git commit -m "$1" && git push; }
 
 # ────[ Herramientas Externas ]───────────────────────────────────────
-[[ -s "${NVM_DIR}/nvm.sh" ]] && {
-    export NVM_LAZY_LOAD=true
-    source "${NVM_DIR}/nvm.sh" --no-use
-}
+[[ -s "${NVM_DIR}/nvm.sh" ]] && source "${NVM_DIR}/nvm.sh"
 
 # ────[ Configuración de Teclas ]─────────────────────────────────────
 bindkey -e
@@ -126,12 +125,13 @@ bindkey '^R' history-incremental-search-backward
 (( ${+commands[starship]} )) && eval "$(starship init zsh)"
 
 
-echo -e "${BLUE}"
-echo " ██╗  ██╗ █████╗ ██████╗ ██╗     ██╗███╗   ██╗██╗   ██╗██╗  ██╗"
-echo " ██║ ██╔╝██╔══██╗██╔══██╗██║     ██║████╗  ██║██║   ██║╚██╗██╔╝"
-echo " █████╔╝ ███████║██████╔╝██║     ██║██╔██╗ ██║██║   ██║ ╚███╔╝ "
-echo " ██╔═██╗ ██╔══██║██╔══██╗██║     ██║██║╚██╗██║██║   ██║ ██╔██╗ "
-echo " ██║  ██╗██║  ██║██║  ██║███████╗██║██║ ╚████║╚██████╔╝██╔╝ ██╗"
-echo " ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝"
-echo -e "${NC}"
-
+# echo -e "${BLUE}"
+# echo " ██╗  ██╗ █████╗ ██████╗ ██╗     ██╗███╗   ██╗██╗   ██╗██╗  ██╗"
+# echo " ██║ ██╔╝██╔══██╗██╔══██╗██║     ██║████╗  ██║██║   ██║╚██╗██╔╝"
+# echo " █████╔╝ ███████║██████╔╝██║     ██║██╔██╗ ██║██║   ██║ ╚███╔╝ "
+# echo " ██╔═██╗ ██╔══██║██╔══██╗██║     ██║██║╚██╗██║██║   ██║ ██╔██╗ "
+# echo " ██║  ██╗██║  ██║██║  ██║███████╗██║██║ ╚████║╚██████╔╝██╔╝ ██╗"
+# echo " ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝"
+# echo -e "${NC}"
+#
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
