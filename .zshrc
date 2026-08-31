@@ -45,7 +45,7 @@ export HISTSIZE=10000
 export SAVEHIST=10000
 
 # ────[ PATH ]────────────────────────────────────────────────────────
-export NVM_DIR="$HOME/.config/nvm"
+export NVM_DIR="$HOME/.nvm"
 typeset -U PATH path
 path=(
     "${HOME}/.local/bin"
